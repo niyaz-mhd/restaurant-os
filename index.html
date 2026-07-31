@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RestaurantOS</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/modals.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container no-bill">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-utensils"></i>
+
+            <h2>RestaurantOS</h2>
+
+        </div>
+
+        <nav>
+
+            <a href="#" class="active">
+
+                <i class="fa-solid fa-house"></i>
+
+                Dashboard
+
+            </a>
+
+            <a href="#">
+
+                <i class="fa-solid fa-table"></i>
+
+                Tables
+
+            </a>
+
+            <a href="#">
+
+                <i class="fa-solid fa-burger"></i>
+
+                Menu
+
+            </a>
+
+            <a href="#">
+
+                <i class="fa-solid fa-receipt"></i>
+
+                Orders
+
+            </a>
+
+            <a href="#">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Analytics
+
+            </a>
+
+            <a href="#">
+
+                <i class="fa-solid fa-gear"></i>
+
+                Settings
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <!-- HEADER -->
+
+        <header class="header">
+
+
+
+            <div class="header-right">
+
+                <button id="theme-toggle" class="notification" title="Toggle Theme">
+
+                    <i class="fa-solid fa-moon"></i>
+
+                </button>
+
+                <button class="notification">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                </button>
+
+                <img
+                src="https://i.pravatar.cc/100"
+                class="avatar">
+
+            </div>
+
+        </header>
+
+        <!-- CONTENT -->
+
+        <!-- DASHBOARD VIEW -->
+        <div id="dashboard-view" class="view-section active">
+            <div class="admin-grid" style="margin-bottom: 30px;">
+                <div class="stat-card stat-blue">
+                    <p>Total Orders</p>
+                    <h2 id="stat-orders">0</h2>
+                    <i class="fa-solid fa-receipt" style="float: right; font-size: 24px; opacity: 0.8; margin-top: -10px;"></i>
+                </div>
+                <div class="stat-card stat-green">
+                    <p>Total Sales</p>
+                    <h2 id="stat-revenue">$0.00</h2>
+                    <i class="fa-solid fa-dollar-sign" style="float: right; font-size: 24px; opacity: 0.8; margin-top: -10px;"></i>
+                </div>
+                <div class="stat-card stat-orange">
+                    <p>Occupied Tables</p>
+                    <h2 id="stat-occupied">0</h2>
+                    <i class="fa-solid fa-table" style="float: right; font-size: 24px; opacity: 0.8; margin-top: -10px;"></i>
+                </div>
+                <div class="stat-card stat-red">
+                    <p>Available Tables</p>
+                    <h2 id="stat-available">0</h2>
+                    <i class="fa-solid fa-circle-check" style="float: right; font-size: 24px; opacity: 0.8; margin-top: -10px;"></i>
+                </div>
+            </div>
+            <div class="admin-card">
+                <h3>Popular Dishes</h3>
+                <table class="admin-table" style="margin-top: 15px;">
+                    <thead>
+                        <tr>
+                            <th>Dish Name</th>
+                            <th>Units Sold</th>
+                        </tr>
+                    </thead>
+                    <tbody id="popular-dishes-list">
+                        <!-- Rendered dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- POS / TABLES VIEW -->
+        <section id="pos-view" class="content view-section pos-view">
+            <!-- TABLES -->
+            <section class="tables-section" style="width: 100%;">
+                <div class="section-title">
+                    <h2>Restaurant Tables</h2>
+                    <button class="primary-btn">
+                        Add Table
+                    </button>
+                </div>
+                <div class="table-filters">
+                    <button class="table-filter-btn active" data-status="all">All</button>
+                    <button class="table-filter-btn" data-status="Available">Available</button>
+                    <button class="table-filter-btn" data-status="Occupied">Occupied</button>
+                    <button class="table-filter-btn" data-status="Reserved">Reserved</button>
+                </div>
+                <div class="tables-grid">
+                </div>
+            </section>
+            <!-- MENU -->
+            <section class="menu-section" style="width: 100%;">
+                <div class="section-title">
+                    <h2>Order Menu</h2>
+                </div>
+                <div class="category-tabs">
+                    <!-- Rendered dynamically -->
+                </div>
+                <div class="products-grid">
+                </div>
+            </section>
+        </section>
+
+        <!-- MENU MANAGEMENT VIEW -->
+        <div id="menu-manage-view" class="view-section">
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
+                <!-- Add Dish Card -->
+                <div class="admin-card">
+                    <h3>Add New Dish</h3>
+                    <form id="dishForm" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+                        <div>
+                            <label style="font-size: 14px; margin-bottom: 5px; display: block; font-weight: 500;">Dish Name</label>
+                            <input type="text" name="name" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 14px; margin-bottom: 5px; display: block; font-weight: 500;">Price ($)</label>
+                            <input type="number" name="price" required min="0" step="0.01" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 14px; margin-bottom: 5px; display: block; font-weight: 500;">Category</label>
+                            <input type="text" name="category" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;" placeholder="e.g. Pizza, Burger">
+                        </div>
+                        <div>
+                            <label style="font-size: 14px; margin-bottom: 5px; display: block; font-weight: 500;">Image URL</label>
+                            <input type="url" name="image" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;" placeholder="https://images.unsplash.com/...">
+                        </div>
+                        <button type="submit" class="primary-btn" style="margin-top: 10px; width: 100%;">Add Dish</button>
+                    </form>
+                </div>
+                <!-- Manage Menu Card -->
+                <div class="admin-card">
+                    <h3>Manage Menu Items</h3>
+                    <div style="overflow-x: auto; margin-top: 15px;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-dishes-list">
+                                <!-- Rendered dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ORDERS VIEW -->
+        <div id="orders-view" class="view-section">
+            <div class="admin-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>Completed Orders</h3>
+                    <button id="export-json-btn" class="primary-btn">
+                        <i class="fa-solid fa-download"></i> Export JSON
+                    </button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Date / Time</th>
+                                <th>Table</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="completed-orders-list">
+                            <!-- Rendered dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ANALYTICS VIEW -->
+        <div id="analytics-view" class="view-section">
+            <div class="admin-grid" style="margin-bottom: 30px;">
+                <div class="admin-card">
+                    <h3>Sales Performance</h3>
+                    <p style="margin-top: 15px; font-size: 15px; color: var(--light-text);">
+                        Total Revenue generated so far. Check the Dashboard for a quick summary.
+                    </p>
+                    <h1 style="font-size: 45px; color: var(--primary); margin: 20px 0;" id="analytics-revenue">$0.00</h1>
+                </div>
+                <div class="admin-card">
+                    <h3>Table Occupancy Rate</h3>
+                    <div style="margin-top: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Occupancy Status</span>
+                            <span id="analytics-occupancy-text">0/20</span>
+                        </div>
+                        <div style="background: #eee; height: 12px; border-radius: 6px; overflow: hidden;">
+                            <div id="analytics-occupancy-bar" style="background: var(--primary); width: 0%; height: 100%; transition: width 0.3s;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="admin-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px;">
+                <div class="admin-card">
+                    <h3>Weekly Sales Trend</h3>
+                    <div style="position: relative; height: 220px; width: 100%; margin-top: 15px;">
+                        <canvas id="salesTrendChart"></canvas>
+                    </div>
+                </div>
+                <div class="admin-card">
+                    <h3>Sales by Category</h3>
+                    <div style="position: relative; height: 220px; width: 100%; margin-top: 15px;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS VIEW -->
+        <div id="settings-view" class="view-section">
+            <div class="admin-card" style="max-width: 500px;">
+                <h3>System Settings</h3>
+                <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 20px;">
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 5px; display: block;">Restaurant Name</label>
+                        <input type="text" id="settings-app-name" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 5px; display: block;">GST / Tax Percentage (%)</label>
+                        <input type="number" id="settings-gst" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;" min="0" max="100">
+                    </div>
+                    <div style="display: flex; gap: 15px; margin-top: 10px;">
+                        <button id="save-settings-btn" class="primary-btn">Save Settings</button>
+                        <button id="reset-db-btn" class="primary-btn" style="background: var(--danger);">Reset Database</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- BILL PANEL -->
+
+    <aside class="bill-panel">
+
+        <h2>Current Order</h2>
+
+        <div class="bill-items">
+
+            No items selected.
+
+        </div>
+
+        <div class="bill-footer">
+
+            <div class="bill-summary-row">
+                <span>Subtotal</span>
+                <span id="bill-subtotal">$0.00</span>
+            </div>
+
+            <div class="bill-summary-row">
+                <span id="bill-tax-label">GST (5%)</span>
+                <span id="bill-tax">$0.00</span>
+            </div>
+
+            <div class="bill-summary-row" style="align-items: center; justify-content: space-between; display: flex; margin-bottom: 10px;">
+                <span>Discount (%)</span>
+                <input type="number" id="bill-discount-input" min="0" max="100" value="0">
+            </div>
+
+            <div class="bill-summary-row total-row" style="font-size: 20px; font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 15px; border-top: 1px dashed #eee; padding-top: 10px;">
+                <span>Total</span>
+                <span id="bill-total">$0.00</span>
+            </div>
+
+            <div class="bill-actions" style="display: flex; gap: 10px;">
+                <button class="primary-btn release-btn" style="background: var(--danger); flex: 1; padding: 12px; font-size: 14px;">
+                    Release
+                </button>
+                <button class="checkout-btn" style="flex: 1.5; padding: 12px; font-size: 14px;">
+                    Checkout
+                </button>
+            </div>
+
+        </div>
+
+    </aside>
+
+</div>
+
+<!-- MODALS -->
+<div id="dish-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="dish-modal-title">Add New Dish</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        <form id="modal-dishForm" style="display: flex; flex-direction: column; gap: 15px;">
+            <input type="hidden" name="id">
+            <div>
+                <label style="font-size: 14px; margin-bottom: 5px; display: block; font-weight: 500;">Dish Name</label>
+                <input type="text" name="name" required>
+            </div>
+            <div>
+                <label style="font-size: 14px; margin-bottom: 5px; display: block; font-weight: 500;">Price ($)</label>
+                <input type="number" name="price" required min="0" step="0.01">
+            </div>
+            <div>
+                <label style="font-size: 14px; margin-bottom: 5px; display: block; font-weight: 500;">Category</label>
+                <input type="text" name="category" required placeholder="e.g. Pizza, Burger">
+            </div>
+            <div>
+                <label style="font-size: 14px; margin-bottom: 5px; display: block; font-weight: 500;">Image URL</label>
+                <input type="url" name="image" required placeholder="https://images.unsplash.com/...">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="primary-btn close-modal-btn" style="background: #ccc; color: #333;">Cancel</button>
+                <button type="submit" class="primary-btn" id="dish-modal-submit-btn">Save Dish</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="table-modal" class="modal">
+    <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-header">
+            <h3>Add New Table</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        <form id="modal-tableForm" style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <label style="font-size: 14px; margin-bottom: 5px; display: block; font-weight: 500;">Table Capacity</label>
+                <input type="number" name="capacity" value="4" required min="1" max="20">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="primary-btn close-modal-btn" style="background: #ccc; color: #333;">Cancel</button>
+                <button type="submit" class="primary-btn">Add Table</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="module"
+src="core/app.js"></script>
+
+</body>
+</html>
